@@ -1,5 +1,32 @@
+import { useState, useEffect, useRef } from 'react';
 import { ArrowRight, ArrowDown, Calendar, Briefcase, Users, Star, ShieldCheck, Target, Eye, Gem } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
+
+const AnimatedCounter = ({ value, duration = 1.5 }) => {
+  const [count, setCount] = useState(0);
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-50px" });
+
+  const numericPart = parseInt(value.replace(/[^0-9]/g, ''), 10) || 0;
+  const suffix = value.replace(/[0-9]/g, '');
+
+  useEffect(() => {
+    if (isInView) {
+      let startTime = null;
+      const step = (timestamp) => {
+        if (!startTime) startTime = timestamp;
+        const progress = Math.min((timestamp - startTime) / (duration * 1000), 1);
+        setCount(Math.floor(progress * numericPart));
+        if (progress < 1) {
+          window.requestAnimationFrame(step);
+        }
+      };
+      window.requestAnimationFrame(step);
+    }
+  }, [isInView, numericPart, duration]);
+
+  return <span ref={ref}>{count}{suffix}</span>;
+};
 
 const About = () => {
   const stats = [
@@ -212,7 +239,9 @@ const About = () => {
                   <stat.icon size={22} className="stroke-[2]" />
                 </div>
                 <div>
-                  <div className="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">{stat.number}</div>
+                  <div className="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">
+                    <AnimatedCounter value={stat.number} />
+                  </div>
                   <div className="text-xs md:text-sm font-semibold text-gray-400">{stat.label}</div>
                 </div>
               </motion.div>
@@ -255,7 +284,7 @@ const About = () => {
               <div className="flex items-center justify-between mt-auto">
                 {/* Circular Arrow CTA */}
                 <div className="w-12 h-12 rounded-full border border-slate-200/80 flex items-center justify-center text-slate-500 group-hover:bg-primary group-hover:text-white group-hover:border-primary group-hover:shadow-[0_4px_12px_rgba(2,29,110,0.2)] transition-all duration-300 cursor-pointer z-20">
-                  <ArrowRight size={20} className="stroke-[3]" />
+                  <ArrowRight size={20} className="stroke-[3] transition-transform duration-300 group-hover:-rotate-45" />
                 </div>
 
                 {/* Corner Illustration image - floating translucent layer */}
