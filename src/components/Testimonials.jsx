@@ -3,8 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Star } from 'lucide-react';
 
 const Testimonials = () => {
-  const [itemsPerPage, setItemsPerPage] = useState(3);
-  const [activePage, setActivePage] = useState(0);
+  const [activeIdx, setActiveIdx] = useState(0);
   const [autoplay, setAutoplay] = useState(true);
 
   const stats = [
@@ -16,101 +15,58 @@ const Testimonials = () => {
   const testimonials = [
     {
       id: 1,
-      name: 'Smith Vodka',
+      name: 'Christa Smith',
       role: 'Manager',
+      company: 'FinTech Solutions',
       avatar: '/images/Testimonials/christa_smith.png',
-      quote: 'Thus, Lorem Ipsum has only limited suitability as a visual filler for German texts.',
-      rating: 5
+      quote: 'Great experience all around! Easy to use and efficient.',
     },
     {
       id: 2,
-      name: 'Cristino Murfi',
-      role: 'Manager',
-      avatar: '/images/Testimonials/elena_rostova.png',
-      quote: 'There is now an abundance of readable dummy texts. These are usually used when a text is required.',
-      rating: 5
+      name: 'Sarah Jenkins',
+      role: 'VP of Engineering',
+      company: 'RetailCloud',
+      avatar: '/images/Testimonials/sarah_jenkins.png',
+      quote: 'NexGen reconstructed our core transaction ledger into a resilient serverless architecture. We successfully weathered a Black Friday traffic surge of 15x normal load with absolute zero friction.',
     },
     {
       id: 3,
-      name: 'Cristino Murfi',
-      role: 'Manager',
+      name: 'Marcus Chen',
+      role: 'Chief Technology Officer',
+      company: 'HealthLink Global',
       avatar: '/images/Testimonials/marcus_chen.png',
-      quote: 'According to most sources, Lorum Ipsum can be traced back to a text composed by Cicero.',
-      rating: 5
+      quote: 'Security and compliance were major bottlenecks for our telehealth launch. NexGen engineered an end-to-end encrypted API network that passed SOC2 Type II and HIPAA audits on the first run.',
     },
     {
       id: 4,
       name: 'Elena Rostova',
       role: 'Director of Product',
-      avatar: '/images/Testimonials/sarah_jenkins.png',
-      quote: "We hired NexGen to optimize our multi-region Kubernetes clusters. They didn't just write code; they refactored our entire data ingestion stream.",
-      rating: 5
-    },
-    {
-      id: 5,
-      name: 'Marcus Chen',
-      role: 'Chief Technology Officer',
-      avatar: '/images/Testimonials/marcus_chen.png',
-      quote: 'Security and compliance were major bottlenecks for our telehealth launch. NexGen engineered an end-to-end encrypted API network.',
-      rating: 5
-    },
-    {
-      id: 6,
-      name: 'Christa Smith',
-      role: 'VP of Engineering',
-      avatar: '/images/Testimonials/christa_smith.png',
-      quote: 'Great experience all around! Easy to use and highly efficient developer integration workflow.',
-      rating: 5
+      company: 'LogiRoute Logistics',
+      avatar: '/images/Testimonials/elena_rostova.png',
+      quote: 'We hired NexGen to optimize our multi-region Kubernetes clusters. They didn\'t just write code; they refactored our entire data ingestion stream. The response latency dropped from 4.2s to sub-80ms.',
     }
   ];
 
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth >= 1024) {
-        setItemsPerPage(3);
-      } else if (window.innerWidth >= 768) {
-        setItemsPerPage(2);
-      } else {
-        setItemsPerPage(1);
-      }
-    };
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  const pageCount = Math.ceil(testimonials.length / itemsPerPage);
-
-  // Keep activePage in bounds
-  useEffect(() => {
-    if (activePage >= pageCount) {
-      setActivePage(Math.max(0, pageCount - 1));
-    }
-  }, [itemsPerPage, pageCount, activePage]);
-
-  // Slow, smooth loop autoplay
+  // Optional autoplay for slider
   useEffect(() => {
     if (!autoplay) return;
     const interval = setInterval(() => {
-      setActivePage((prev) => (prev + 1) % pageCount);
-    }, 6000); // 6 seconds for a slow, premium movement
+      setActiveIdx((prev) => (prev + 1) % testimonials.length);
+    }, 4000);
     return () => clearInterval(interval);
-  }, [autoplay, pageCount]);
-
-  // Determine current visible items
-  const startIndex = activePage * itemsPerPage;
-  const visibleTestimonials = testimonials.slice(startIndex, startIndex + itemsPerPage);
+  }, [autoplay, testimonials.length]);
 
   return (
     <section id="testimonials" className="py-16 lg:py-24 bg-white relative overflow-hidden font-sans">
       
       {/* 1. TOP SUB-SECTION: GLOBAL TRUST & STATS */}
-      <div className="relative z-10 w-full px-4 sm:px-8 lg:px-16 xl:px-24 mb-16 lg:mb-20">
+      <div className="relative z-10 w-full px-8 lg:px-16 xl:px-24 mb-16 lg:mb-20">
         
         {/* HIGH-FIDELITY DOTTED WORLD MAP BACKGROUND */}
         <div className="absolute inset-0 z-0 pointer-events-none select-none flex items-center justify-center opacity-[0.22] overflow-hidden">
           <svg className="w-full max-w-[850px] h-[320px] text-slate-200" viewBox="0 0 850 320" fill="none">
             {/* Dotted stylized world network continents */}
+            
             {/* North America */}
             <circle cx="100" cy="70" r="2" fill="currentColor" />
             <circle cx="120" cy="60" r="2" fill="currentColor" />
@@ -312,6 +268,7 @@ const Testimonials = () => {
             <circle cx="680" cy="270" r="2" fill="currentColor" />
             <circle cx="665" cy="280" r="2" fill="currentColor" />
             <circle cx="675" cy="275" r="2" fill="currentColor" />
+
           </svg>
         </div>
 
@@ -361,10 +318,10 @@ const Testimonials = () => {
       </div>
 
       {/* 2. BOTTOM SUB-SECTION: TESTIMONIAL SLIDER */}
-      <div className="relative z-10 w-full px-4 sm:px-8 lg:px-16 xl:px-24">
+      <div className="relative z-10 w-full px-8 lg:px-16 xl:px-24">
         
         {/* Section Title Block */}
-        <div className="text-center max-w-3xl mx-auto mb-14">
+        <div className="text-center max-w-3xl mx-auto mb-10">
           <motion.h2 
             className="text-xl lg:text-[26px] font-bold text-slate-800 tracking-tight mb-3 font-sans"
             initial={{ opacity: 0, y: 15 }}
@@ -385,91 +342,85 @@ const Testimonials = () => {
           </motion.p>
         </div>
 
-        {/* Dynamic Centered Slider Canvas with 3-in-a-row reviews */}
-        <div className="max-w-6xl mx-auto relative flex flex-col items-center">
+        {/* Dynamic Centered Slider Canvas */}
+        <div className="max-w-4xl mx-auto relative px-6 md:px-12 flex flex-col justify-between items-center">
           
-          <div 
-            className="w-full"
-            onMouseEnter={() => setAutoplay(false)}
-            onMouseLeave={() => setAutoplay(true)}
-          >
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activePage}
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -15 }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full will-change-transform transform-gpu"
-              >
-                {visibleTestimonials.map((t) => (
-                  <div key={t.id} className="flex flex-col items-center">
-                    
-                    {/* The Speech Bubble Card */}
-                    <div className="relative bg-white rounded-2xl border border-slate-100 shadow-[0_8px_30px_rgba(0,0,0,0.02)] p-8 text-center flex flex-col items-center justify-between min-h-[220px] w-full mb-8">
-                      {/* Giant Quotation Mark */}
-                      <span className="text-primary text-5xl font-serif font-black leading-none text-[#5c56f6] opacity-90 select-none block mb-2">
-                        “
-                      </span>
-                      
-                      {/* Quote Text */}
-                      <p className="text-[13px] lg:text-[14px] text-slate-400 font-sans font-medium leading-relaxed italic px-2">
-                        " {t.quote} "
-                      </p>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeIdx}
+              initial={{ opacity: 0, x: 40 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -40 }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
+              className="w-full flex flex-col items-center text-center will-change-transform transform-gpu"
+              onMouseEnter={() => setAutoplay(false)}
+              onMouseLeave={() => setAutoplay(true)}
+            >
+              
+              {/* Flanked Quote Canvas */}
+              <div className="relative w-full max-w-3xl mb-6 flex justify-center items-center py-6 min-h-[120px]">
+                {/* Left Large Decorative Quote */}
+                <span className="absolute left-0 lg:left-8 top-0 text-[80px] lg:text-[110px] font-serif font-black leading-none text-slate-100/80 select-none -translate-x-4 lg:-translate-x-12 -translate-y-4">
+                  “
+                </span>
+                
+                {/* Centered Quote text */}
+                <p className="text-xs lg:text-[15px] text-slate-400/90 font-sans font-medium leading-relaxed italic z-10 px-12 lg:px-16">
+                  " {testimonials[activeIdx].quote} "
+                </p>
 
-                      {/* Glowing Gold Stars */}
-                      <div className="flex items-center gap-1 mt-5 select-none">
-                        {[...Array(t.rating)].map((_, i) => (
-                          <Star key={i} size={14} className="fill-amber-400 text-amber-400" />
-                        ))}
-                      </div>
+                {/* Right Large Decorative Quote */}
+                <span className="absolute right-0 lg:right-8 bottom-0 text-[80px] lg:text-[110px] font-serif font-black leading-none text-slate-100/80 select-none translate-x-4 lg:translate-x-12 translate-y-8">
+                  ”
+                </span>
+              </div>
 
-                      {/* Bottom Speech Bubble Arrow */}
-                      <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-white border-r border-b border-slate-100 rotate-45 z-10" />
-                    </div>
-
-                    {/* Avatar & Author Metadata Below Card */}
-                    <div className="flex flex-col items-center text-center">
-                      <img 
-                        src={t.avatar}
-                        alt={t.name}
-                        className="w-14 h-14 rounded-full shadow-md object-cover border-2 border-white ring-4 ring-slate-50 select-none mb-3"
-                        draggable="false"
-                      />
-                      <span className="block font-bold text-[14px] text-slate-800 tracking-tight leading-none mb-1.5 font-sans">
-                        {t.name}
-                      </span>
-                      <span className="block text-[11px] text-slate-400 font-semibold font-sans uppercase tracking-wider">
-                        {t.role}
-                      </span>
-                    </div>
-
-                  </div>
+              {/* Glowing Stars */}
+              <div className="flex items-center gap-1 mb-5 select-none">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} size={13} className="fill-amber-400 text-amber-400" />
                 ))}
-              </motion.div>
-            </AnimatePresence>
-          </div>
+              </div>
 
-          {/* Slider Pagination Dot/Diamond Indicators */}
-          <div className="flex items-center justify-center gap-3 mt-12 select-none">
-            {[...Array(pageCount)].map((_, idx) => (
+              {/* Round High-Fidelity Executive Avatar Image */}
+              <div className="mb-4">
+                <img 
+                  src={testimonials[activeIdx].avatar}
+                  alt={testimonials[activeIdx].name}
+                  className="w-14 h-14 rounded-full shadow-md object-cover border-2 border-white ring-2 ring-slate-100 select-none"
+                  draggable="false"
+                />
+              </div>
+
+              {/* Author Metadata */}
+              <div className="text-center">
+                <span className="block font-bold text-xs lg:text-[13px] text-slate-700 tracking-tight leading-none mb-1.5 font-sans">
+                  {testimonials[activeIdx].name}
+                </span>
+                <span className="block text-[10px] lg:text-[11px] text-slate-400 font-medium font-sans">
+                  {testimonials[activeIdx].role}
+                </span>
+              </div>
+
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Slider Dot Indicators */}
+          <div className="flex items-center justify-center gap-2 mt-8">
+            {testimonials.map((_, idx) => (
               <button
                 key={idx}
                 onClick={() => {
-                  setActivePage(idx);
+                  setActiveIdx(idx);
                   setAutoplay(false); // Stop autoplay on click
                 }}
-                className="focus:outline-none transition-all duration-300"
-                aria-label={`Go to page ${idx + 1}`}
-              >
-                {activePage === idx ? (
-                  // Active diamond shape
-                  <div className="w-2.5 h-2.5 bg-[#5c56f6] rotate-45 transition-all duration-300" />
-                ) : (
-                  // Inactive square/rectangle
-                  <div className="w-2.5 h-2.5 bg-[#5c56f6]/20 rounded-[2px] transition-all duration-300 hover:bg-[#5c56f6]/40" />
-                )}
-              </button>
+                className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                  activeIdx === idx 
+                    ? 'bg-[#0033cc]/90 scale-105' 
+                    : 'bg-[#0033cc]/20 hover:bg-[#0033cc]/40'
+                }`}
+                aria-label={`Go to slide ${idx + 1}`}
+              />
             ))}
           </div>
 
