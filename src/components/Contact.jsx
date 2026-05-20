@@ -1,4 +1,4 @@
-import { ArrowRight, Mail, Phone, MapPin, Clock, Send, CheckCircle2, Headphones, Rocket, Shield, Users, Award, Briefcase, Building2, Trophy } from 'lucide-react';
+import { ArrowRight, Mail, Phone, MapPin, Clock, Send, CheckCircle2, Headphones, Rocket, Shield } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const Contact = () => {
@@ -29,13 +29,6 @@ const Contact = () => {
       title: 'Working Hours',
       details: ['Mon - Fri: 9AM - 6PM', 'Sat: 9AM - 1PM'],
     },
-  ];
-
-  const stats = [
-    { number: '120+', label: 'Projects Delivered', desc: 'Successfully completed', icon: Users },
-    { number: '85+', label: 'Happy Clients', desc: 'Trusted by businesses', icon: Trophy },
-    { number: '18+', label: 'Industries Served', desc: 'Across the globe', icon: Briefcase },
-    { number: '98%', label: 'Client Retention', desc: 'Long-term partnerships', icon: Award },
   ];
 
   return (
@@ -342,40 +335,6 @@ const Contact = () => {
           </div>
         </motion.div>
 
-        {/* Stats Bar */}
-        <motion.div 
-          className="bg-white rounded-2xl p-4 sm:p-6 shadow-lg border border-gray-100"
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-        >
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
-            {stats.map((stat, index) => (
-              <motion.div 
-                key={index} 
-                className={`flex items-center gap-4 ${index > 0 ? 'lg:border-l lg:border-gray-100 lg:pl-6' : ''}`}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.4 + (index * 0.1), ease: [0.25, 0.1, 0.25, 1] }}
-              >
-                <motion.div 
-                  className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0"
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <stat.icon className="text-primary" size={22} />
-                </motion.div>
-                <div>
-                  <div className="text-2xl font-bold text-gray-900">{stat.number}</div>
-                  <div className="text-sm font-semibold text-gray-700">{stat.label}</div>
-                  <div className="text-xs text-gray-500">{stat.desc}</div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
       </div>
     </section>
   );
