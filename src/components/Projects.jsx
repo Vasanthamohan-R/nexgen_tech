@@ -58,21 +58,41 @@ const Projects = () => {
     <section id="work" className="py-12 lg:py-18 bg-white font-sans">
       <div className="w-full max-w-7xl mx-auto px-6 lg:px-12">
         
-        {/* Simple & Clean Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16 lg:mb-20">
-          <motion.div 
-            initial={{ opacity: 0, y: 15 }}
+        {/* Premium Section Header */}
+        <div className="text-center mb-16 lg:mb-20 max-w-3xl mx-auto">
+          <motion.div
+            className="flex items-center justify-center gap-2 mb-3"
+            initial={{ opacity: 0, y: -10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <h2 className="text-3xl lg:text-5xl font-extrabold text-slate-900 tracking-tight mb-5">
-              Featured Case Studies
-            </h2>
-            <p className="text-sm lg:text-base text-slate-500 leading-relaxed">
-              Discover how we help enterprise clients transform their operations, scale their infrastructure, and dominate their markets through advanced software engineering.
-            </p>
+            <div className="w-6 h-0.5 bg-primary"></div>
+            <span className="text-xs font-semibold tracking-widest text-primary uppercase">
+              PORTFOLIO
+            </span>
+            <div className="w-6 h-0.5 bg-primary"></div>
           </motion.div>
+
+          <motion.h2
+            className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-slate-900 leading-[1.1] mb-6 tracking-tight uppercase"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+          >
+            Featured <span className="text-primary">Case Studies</span>
+          </motion.h2>
+
+          <motion.p
+            className="text-slate-500 text-sm md:text-base leading-relaxed max-w-2xl mx-auto font-medium"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            Discover how we help enterprise clients transform their operations, scale their infrastructure, and dominate their markets through advanced software engineering.
+          </motion.p>
         </div>
 
         {/* Alternating Project Rows */}
